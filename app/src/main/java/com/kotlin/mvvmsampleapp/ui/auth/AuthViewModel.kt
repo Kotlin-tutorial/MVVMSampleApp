@@ -2,6 +2,7 @@ package com.kotlin.mvvmsampleapp.ui.auth
 
 import android.view.View
 import androidx.lifecycle.ViewModel
+import com.kotlin.mvvmsampleapp.data.repositories.UserRepository
 
 class AuthViewModel: ViewModel() {
 
@@ -12,10 +13,15 @@ class AuthViewModel: ViewModel() {
 
     fun onLoginButtonClick(view: View){
 
-        if( email?.isNotEmpty() ?: true || password?.isNotEmpty() ?: true){
+        authListnerInterface?.onStarted()
+
+        if( email?.isEmpty() ?: true || password?.isEmpty() ?: true){
             authListnerInterface?.onFailure("Invalid email or pssword")
             return
         }
-        authListnerInterface?.onSuccess()
+
+        //ToDo UserRepository use depandancy injection
+        val loginResponceLiveData = UserRepository().userLogin(email.toString() , password.toString())
+        authListnerInterface?.onSuccess(loginResponceLiveData)
     }
 }
