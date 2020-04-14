@@ -1,24 +1,19 @@
 package com.kotlin.mvvmsampleapp.ui.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kotlin.mvvmsampleapp.R
-import com.kotlin.mvvmsampleapp.data.db.AppDataBase
 import com.kotlin.mvvmsampleapp.data.db.enteties.User
-import com.kotlin.mvvmsampleapp.data.network.MyApi
-import com.kotlin.mvvmsampleapp.data.repositories.UserRepository
 import com.kotlin.mvvmsampleapp.databinding.ActivityLoginBinding
 import com.kotlin.mvvmsampleapp.util.hide
 import com.kotlin.mvvmsampleapp.util.show
 import com.kotlin.mvvmsampleapp.util.toast
 import kotlinx.android.synthetic.main.activity_login.*
-import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class LoginActivity : AppCompatActivity(), AuthListnerInterface, KodeinAware {
