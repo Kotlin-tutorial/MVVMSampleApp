@@ -1,7 +1,9 @@
 package com.kotlin.mvvmsampleapp.data.network
 
+import com.kotlin.mvvmsampleapp.data.network.responces.AuthResponce
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -13,7 +15,7 @@ interface MyApi {
 
     @FormUrlEncoded
     @POST("login")
-    fun userLogin(@Field("email") email : String, @Field("password") pasword : String) : Call<ResponseBody>
+    suspend fun userLogin(@Field("email") email : String, @Field("password") pasword : String) : Response<AuthResponce>
 
     companion object{
         operator fun invoke() : MyApi{

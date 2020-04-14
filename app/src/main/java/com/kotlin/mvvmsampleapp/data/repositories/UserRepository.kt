@@ -1,34 +1,31 @@
 package com.kotlin.mvvmsampleapp.data.repositories
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kotlin.mvvmsampleapp.data.db.AppDataBase
+import com.kotlin.mvvmsampleapp.data.db.enteties.User
 import com.kotlin.mvvmsampleapp.data.network.MyApi
-import okhttp3.ResponseBody
+import com.kotlin.mvvmsampleapp.data.network.responces.AuthResponce
 import retrofit2.*
 
 
 
 
-class UserRepository {
+class UserRepository (
+    private  val api:MyApi,
+    private  val db:AppDataBase
+){
 
-    fun userLogin(email:String, password:String) : LiveData<String> {
+    suspend fun userLogin(email:String, password:String) : Response<AuthResponce> {
         val loginResponce = MutableLiveData<String>()
 
         //ToDo Inject MyApi with dependancy injection (Remote data source)
-        MyApi().userLogin(email,password)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    loginResponce.value = t.message
-                }
+        return  api.userLogin(email,password)
 
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    if(response.isSuccessful)
-                         loginResponce.value = response.body()?.string()
-                    else
-                        loginResponce.value = response.errorBody()?.string()
-                }
-
-            })
-        return loginResponce
     }
+
+    suspend fun saveUser(user: User) = db.getUserDao().upsert(user)
+
+    fun getUser() = db.getUserDao().getUser()
+
+
 }
